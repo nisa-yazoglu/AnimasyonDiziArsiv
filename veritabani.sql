@@ -1557,7 +1557,7 @@ CREATE TRIGGER trg_yil_kontrol BEFORE INSERT OR UPDATE ON public.animasyondizile
 --
 
 ALTER TABLE ONLY public.animasyon_janra
-    ADD CONSTRAINT animasyon_janra_animasyonid_fkey FOREIGN KEY (animasyonid) REFERENCES public.animasyondizileri(animasyonid);
+    ADD CONSTRAINT animasyon_janra_animasyonid_fkey FOREIGN KEY (animasyonid) REFERENCES public.animasyondizileri(animasyonid) ON DELETE CASCADE;
 
 
 --
@@ -1575,7 +1575,7 @@ ALTER TABLE ONLY public.animasyon_janra
 --
 
 ALTER TABLE ONLY public.animasyon_odul
-    ADD CONSTRAINT animasyon_odul_animasyonid_fkey FOREIGN KEY (animasyonid) REFERENCES public.animasyondizileri(animasyonid);
+    ADD CONSTRAINT animasyon_odul_animasyonid_fkey FOREIGN KEY (animasyonid) REFERENCES public.animasyondizileri(animasyonid) ON DELETE CASCADE;
 
 
 --
@@ -1593,7 +1593,7 @@ ALTER TABLE ONLY public.animasyon_odul
 --
 
 ALTER TABLE ONLY public.animasyon_platform
-    ADD CONSTRAINT animasyon_platform_animasyonid_fkey FOREIGN KEY (animasyonid) REFERENCES public.animasyondizileri(animasyonid);
+    ADD CONSTRAINT animasyon_platform_animasyonid_fkey FOREIGN KEY (animasyonid) REFERENCES public.animasyondizileri(animasyonid) ON DELETE CASCADE;
 
 
 --
@@ -1611,7 +1611,7 @@ ALTER TABLE ONLY public.animasyon_platform
 --
 
 ALTER TABLE ONLY public.animasyon_teknik
-    ADD CONSTRAINT animasyon_teknik_animasyonid_fkey FOREIGN KEY (animasyonid) REFERENCES public.animasyondizileri(animasyonid);
+    ADD CONSTRAINT animasyon_teknik_animasyonid_fkey FOREIGN KEY (animasyonid) REFERENCES public.animasyondizileri(animasyonid) ON DELETE CASCADE;
 
 
 --
@@ -1638,7 +1638,7 @@ ALTER TABLE ONLY public.animasyondizileri
 --
 
 ALTER TABLE ONLY public.karakter_seslendirmen
-    ADD CONSTRAINT karakter_seslendirmen_karakterid_fkey FOREIGN KEY (karakterid) REFERENCES public.karakterler(karakterid);
+    ADD CONSTRAINT karakter_seslendirmen_karakterid_fkey FOREIGN KEY (karakterid) REFERENCES public.karakterler(karakterid) ON DELETE CASCADE;
 
 
 --
@@ -1656,7 +1656,7 @@ ALTER TABLE ONLY public.karakter_seslendirmen
 --
 
 ALTER TABLE ONLY public.karakterler
-    ADD CONSTRAINT karakterler_animasyonid_fkey FOREIGN KEY (animasyonid) REFERENCES public.animasyondizileri(animasyonid);
+    ADD CONSTRAINT karakterler_animasyonid_fkey FOREIGN KEY (animasyonid) REFERENCES public.animasyondizileri(animasyonid) ON DELETE CASCADE;
 
 
 --
@@ -1683,7 +1683,7 @@ ALTER TABLE ONLY public.seslendirmenler
 --
 
 ALTER TABLE ONLY public.sezonlar
-    ADD CONSTRAINT sezonlar_animasyonid_fkey FOREIGN KEY (animasyonid) REFERENCES public.animasyondizileri(animasyonid);
+    ADD CONSTRAINT sezonlar_animasyonid_fkey FOREIGN KEY (animasyonid) REFERENCES public.animasyondizileri(animasyonid) ON DELETE CASCADE;
 
 
 --
