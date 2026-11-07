@@ -1,61 +1,43 @@
-# Animasyon Dizileri Arşivi
+# Animasyon Dizi Arşivi
 
-Animasyon dizilerini kaydetmek, aramak, güncellemek ve silmek için geliştirilmiş bir web uygulaması. Arka planda PostgreSQL veritabanı, arayüzde Python (Flask) kullanılmıştır. Veritabanı Yönetim Sistemleri dersi kapsamında hazırlanmıştır.
+Veritabanı Yönetim Sistemleri dersi için yaptığım proje. Animasyon dizilerini listeleyip arayabildiğin, yeni dizi ekleyip düzenleyebildiğin ve silebildiğin basit bir web uygulaması. Veritabanı PostgreSQL'de, arayüz Python ve Flask ile yazıldı.
 
+## Neler var
 
-## Özellikler
+Veritabanında 17 tablo var. Ana tablo AnimasyonDizileri. Türler, teknikler, platformlar ve ödüller ayrı tablolarda tutuluyor ve ara tablolarla dizilere bağlanıyor. Yönetmen, senarist ve seslendirmenler için ortak bir Kisiler tablosu kullandım.
 
-- Dizileri tablo halinde listeleme ve isme göre arama
-- Yeni dizi ekleme, mevcut diziyi güncelleme ve silme
-- Hatalı veri girişine karşı iki katmanlı kontrol:
-  - **Uygulama tarafında** (`trigger.py`): boş isim, IMDb puanı aralığı, yıl kontrolü, bitiş yılının başlangıçtan önce olmaması, negatif sezon/bölüm sayısı, aynı isimli dizi
-  - **Veritabanı tarafında** (tetikleyiciler): IMDb puanının 0–10 arasında olması, yayın yılının gelecekte olmaması, aynı isimli dizinin tekrar eklenmemesi, dizi adının otomatik olarak düzgün biçimlendirilmesi
+Ekleme, güncelleme ve silme işlemleri PostgreSQL'de yazdığım fonksiyonlar üzerinden yapılıyor (DiziEkle, DiziGuncelle, DiziSil). Tabloda birkaç trigger da var: IMDb puanı 0-10 arasında değilse, yayın yılı gelecekteyse ya da aynı isimde bir dizi zaten varsa kayıt eklenmiyor. Dizi adlarının her kelimesinin baş harfi de kaydedilirken otomatik olarak büyütülüyor.
 
-## Veritabanı Tasarımı
+Bu kontrollerin bir kısmını formdan gelen veri için Python tarafında da yaptım (trigger.py), böylece hata mesajı direkt sayfada görünüyor.
 
-- 17 tablodan oluşan ilişkisel şema (birincil ve yabancı anahtarlar ile)
-- Diziler ile tür, teknik, platform ve ödüller arasındaki çoktan-çoğa ilişkiler için ara tablolar
-- Yönetmen, senarist ve seslendirmen rolleri ortak bir `Kisiler` tablosu üzerinden modellenmiştir
-- Ekleme, güncelleme ve silme işlemleri PL/pgSQL saklı fonksiyonları (`DiziEkle`, `DiziGuncelle`, `DiziSil`) ile yapılır
-- SQL sorgularında parametreli sorgu kullanılmıştır (SQL enjeksiyonuna karşı)
+## Çalıştırmak için
 
-## Kullanılan Teknolojiler
+PostgreSQL ve Python kurulu olmalı.
 
-- PostgreSQL 18, PL/pgSQL
-- Python, Flask, psycopg2
-- HTML, CSS (Jinja2 şablonları)
-
-## Kurulum ve Çalıştırma
-
-1. Gerekli Python paketlerini kurun:
-   ```
-   pip install -r requirements.txt
-   ```
-2. PostgreSQL'de `AnimasyonDiziVerileri` adında boş bir veritabanı oluşturun ve yedek dosyasını yükleyin:
+1. `AnimasyonDiziVerileri` adında bir veritabanı oluştur ve `veritabani.sql` dosyasını içine yükle:
    ```
    psql -U postgres -d AnimasyonDiziVerileri -f veritabani.sql
    ```
-   (Yedek PostgreSQL 18 ile alınmıştır. Başta çıkan "schema public already exists" uyarısı önemsizdir.)
-3. Veritabanı şifrenizi ortam değişkeni olarak tanımlayın (Windows PowerShell):
+   Yedek PostgreSQL 18 ile alındı, eski sürümlerde sorun çıkabilir.
+2. Paketleri kur:
    ```
-   $env:DB_PASSWORD="sifreniz"
+   pip install -r requirements.txt
    ```
-4. Uygulamayı başlatın ve tarayıcıda `http://127.0.0.1:5000` adresini açın:
+3. Veritabanı şifresini ortam değişkeni olarak ver ve uygulamayı başlat (PowerShell):
    ```
+   $env:DB_PASSWORD="sifren"
    python app.py
    ```
+4. Tarayıcıda http://127.0.0.1:5000 adresini aç.
 
-## Proje Yapısı
+## Dosyalar
 
-| Dosya | Açıklama |
-|---|---|
-| `app.py` | Flask uygulaması ve sayfa yönlendirmeleri |
-| `fonklarvs.py` | Veritabanı bağlantısı ve sorgu fonksiyonları |
-| `trigger.py` | Uygulama tarafındaki veri doğrulama |
-| `templates/` | Liste ve form sayfalarının HTML şablonları |
-| `veritabani.sql` | Tablolar, fonksiyonlar, tetikleyiciler ve örnek veriler |
+- `app.py`: Flask uygulaması, sayfalar burada
+- `fonklarvs.py`: veritabanı bağlantısı ve sorgular
+- `trigger.py`: formdan gelen verinin kontrolü
+- `templates/`: HTML sayfaları
+- `veritabani.sql`: veritabanı yedeği (tablolar, fonksiyonlar, triggerlar ve örnek veriler)
 
-## Geliştirilebilecekler
+## Eksikler
 
-- Tür, platform, ödül ve yönetmen bilgileri şu an ana tabloda metin olarak da tutuluyor. Arayüzün bu bilgileri doğrudan ara tablolardan okuyup yazması, şemadaki normalizasyonu tam olarak kullanmasını sağlar.
-- Karakter, sezon ve seslendirmen tabloları için arayüz sayfaları eklenebilir.
+Tür, platform, ödül ve yönetmen için ara tablolar olsa da arayüz bu bilgileri hâlâ ana tablodaki metin alanlarından okuyor. Ara tablolar şu an sadece Arcane için dolu. Karakter, sezon ve seslendirmen tabloları için de arayüzde henüz bir sayfa yok.
