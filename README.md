@@ -28,7 +28,7 @@ PostgreSQL ve Python kurulu olmalı.
    $env:DB_PASSWORD="sifren"
    python app.py
    ```
-4. Tarayıcıda 'http://127.0.0.1:5000' adresini aç.
+4. Tarayıcıda `http://127.0.0.1:5000` adresini aç.
 
 ## Dosyalar
 
