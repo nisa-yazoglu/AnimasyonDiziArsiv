@@ -2,7 +2,6 @@
 
 Animasyon dizilerini kaydetmek, aramak, güncellemek ve silmek için geliştirilmiş bir web uygulaması. Arka planda PostgreSQL veritabanı, arayüzde Python (Flask) kullanılmıştır. Veritabanı Yönetim Sistemleri dersi kapsamında hazırlanmıştır.
 
-![Ana sayfa](ekran-goruntusu.png)
 
 ## Özellikler
 
