@@ -1,3 +1,4 @@
+import os
 import psycopg2
 
 def baglanti_kur():
@@ -6,7 +7,7 @@ def baglanti_kur():
             host="localhost",
             database="AnimasyonDiziVerileri",
             user="postgres",
-            password="159357", 
+            password=os.environ.get("DB_PASSWORD", ""), 
             port="5432"
         )
     except Exception as e:
